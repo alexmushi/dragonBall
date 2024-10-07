@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="8dp"
+    android:background="#FFF"
+    android:elevation="2dp"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/characterImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center_horizontal"
+        android:scaleType="centerCrop"
+        android:contentDescription="Character Image" />
+
+    <TextView
+        android:id="@+id/characterName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:paddingTop="8dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="#000"
+        android:text="Character Name" />
+
+    <TextView
+        android:id="@+id/characterKi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Ki: "
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/characterMaxKi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Max Ki: "
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/characterRace"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Race: "
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/characterGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Gender: "
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/characterAffiliation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Affiliation: "
+        android:textColor="#666" />
+
+    <TextView
+        android:id="@+id/characterDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Description"
+        android:textColor="#666"
+        android:maxLines="3"
+        android:ellipsize="end" />
+
+</LinearLayout>
