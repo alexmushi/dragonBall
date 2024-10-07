@@ -5,59 +5,22 @@
     android:orientation="vertical"
     android:padding="16dp">
 
-    <!-- Input fields for filters (Hidden) -->
-    <EditText
-        android:id="@+id/filterName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Name"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/filterRace"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Race"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/filterGender"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Gender"
-        android:visibility="gone" />
-
-    <EditText
-        android:id="@+id/filterAffiliation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Affiliation"
-        android:visibility="gone" />
-
-    <!-- RadioGroup for Sort Order Selection -->
-    <RadioGroup
-        android:id="@+id/sortOrderGroup"
+    <!-- Spinner for Sort Type Selection -->
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp">
+        android:text="Filtros:" />
 
-        <RadioButton
-            android:id="@+id/sortAscending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filtrar por Ki (ascendiente)" />
-
-        <RadioButton
-            android:id="@+id/sortDescending"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Filtrar por Ki (descendiente)" />
-    </RadioGroup>
+    <Spinner
+        android:id="@+id/sortTypeSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/sort_options" />
 
     <!-- Button to Apply Filters -->
     <Button
         android:id="@+id/applyFiltersButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Aplicar" />
+        android:text="Aplicar Filtros" />
 </LinearLayout>

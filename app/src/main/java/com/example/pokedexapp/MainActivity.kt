@@ -2,9 +2,11 @@ package com.example.pokedexapp
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.AdapterView
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioGroup
+import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -16,6 +18,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val adapter = DragonBallAdapter()
+    private var selectedSortOption: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,21 +52,21 @@ class MainActivity : AppCompatActivity() {
             .setView(dialogView)
             .create()
 
-        dialogView.findViewById<Button>(R.id.applyFiltersButton).setOnClickListener {
-            val name = dialogView.findViewById<EditText>(R.id.filterName).text.toString().ifBlank { null }
-            val race = dialogView.findViewById<EditText>(R.id.filterRace).text.toString().ifBlank { null }
-            val gender = dialogView.findViewById<EditText>(R.id.filterGender).text.toString().ifBlank { null }
-            val affiliation = dialogView.findViewById<EditText>(R.id.filterAffiliation).text.toString().ifBlank { null }
-
-            // Capture sort order choice
-            val sortOrder = when (dialogView.findViewById<RadioGroup>(R.id.sortOrderGroup).checkedRadioButtonId) {
-                R.id.sortAscending -> "ascending"
-                R.id.sortDescending -> "descending"
-                else -> null
+        // Configure the sort type Spinner
+        val sortSpinner = dialogView.findViewById<Spinner>(R.id.sortTypeSpinner)
+        sortSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+                selectedSortOption = parent?.getItemAtPosition(position).toString()
             }
 
-            // Fetch characters with specified filters and sort order
-            fetchCharacters(name, race, gender, affiliation, sortOrder)
+            override fun onNothingSelected(parent: AdapterView<*>?) {
+                selectedSortOption = "Sort by Ki" // Default sorting option
+            }
+        }
+
+        dialogView.findViewById<Button>(R.id.applyFiltersButton).setOnClickListener {
+            // Fetch characters based on the selected sort option
+            fetchCharacters(sortType = selectedSortOption)
             filterDialog.dismiss()
         }
 
@@ -75,7 +78,7 @@ class MainActivity : AppCompatActivity() {
         race: String? = null,
         gender: String? = null,
         affiliation: String? = null,
-        sortOrder: String? = null
+        sortType: String? = "Sort by Ki"
     ) {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://dragonball-api.com/api/")
@@ -99,13 +102,15 @@ class MainActivity : AppCompatActivity() {
                                 if (page < totalPages) {
                                     fetchPage(page + 1)
                                 } else {
-                                    val sortedCharacters = allCharacters.sortedWith { char1, char2 ->
-                                        val ki1 = parseKiValue(char1.ki)
-                                        val ki2 = parseKiValue(char2.ki)
-
-                                        if (sortOrder == "ascending") {
-                                            ki1.compareTo(ki2)
-                                        } else {
+                                    // Sort based on the selected sort type
+                                    val sortedCharacters = when (sortType) {
+                                        "Sort Alphabetically" -> allCharacters.sortedBy { it.name }
+                                        "Sort by Race" -> allCharacters.sortedBy { it.race }
+                                        "Sort by Gender" -> allCharacters.sortedBy { it.gender }
+                                        "Sort by Affiliation" -> allCharacters.sortedBy { it.affiliation }
+                                        else -> allCharacters.sortedWith { char1, char2 ->
+                                            val ki1 = parseKiValue(char1.ki)
+                                            val ki2 = parseKiValue(char2.ki)
                                             ki2.compareTo(ki1)
                                         }
                                     }
@@ -127,59 +132,31 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun parseKiValue(ki: String): Double {
-        // Define a map of common suffixes and their power of ten multipliers
         val multipliers = mapOf(
             "thousand" to 1_000.0,
             "million" to 1_000_000.0,
             "billion" to 1_000_000_000.0,
             "trillion" to 1_000_000_000_000.0,
             "quadrillion" to 1_000_000_000_000_000.0,
-            "quintillion" to 1_000_000_000_000_000_000.0,
-            "sextillion" to 1_000_000_000_000_000_000_000.0,
-            "septillion" to 1_000_000_000_000_000_000_000_000.0,
-            "octillion" to 1_000_000_000_000_000_000_000_000_000.0,
-            "nonillion" to 1_000_000_000_000_000_000_000_000_000_000.0,
-            "decillion" to 1e33,
-            "undecillion" to 1e36,
-            "duodecillion" to 1e39,
-            "tredecillion" to 1e42,
-            "quattuordecillion" to 1e45,
-            "quindecillion" to 1e48,
-            "sexdecillion" to 1e51,
-            "septendecillion" to 1e54,
-            "octodecillion" to 1e57,
-            "novemdecillion" to 1e60,
-            "vigintillion" to 1e63,
             "googol" to 1e100,
             "googolplex" to 1e10000
         )
 
         return try {
-            // Remove commas and periods from the numeric part
             val cleanedKi = ki.replace(",", "").replace(".", "")
-
-            // Extract the numeric base and any suffix present
             val regex = Regex("([0-9]+\\.?[0-9]*)(\\s*[A-Za-z]*)")
             val matchResult = regex.matchEntire(cleanedKi)
 
             if (matchResult != null) {
                 val (baseStr, suffix) = matchResult.destructured
-
-                // Parse the base value to double
                 val baseValue = baseStr.toDoubleOrNull() ?: return 0.0
-
-                // Retrieve the multiplier based on the lowercase suffix (default to 1 if no suffix or unknown suffix)
                 val multiplier = multipliers[suffix.trim().lowercase()] ?: 1.0
-
-                // Calculate the final value by applying the multiplier
                 baseValue * multiplier
             } else {
                 0.0
             }
         } catch (e: NumberFormatException) {
-            0.0 // Default to 0 if parsing fails
+            0.0
         }
     }
-
-
 }
