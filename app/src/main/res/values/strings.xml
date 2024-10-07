@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">PokedexApp</string>
+    <!-- Sorting Options for Spinner -->
+    <string-array name="sort_options">
+        <item>Sort by Ki</item>
+        <item>Sort Alphabetically</item>
+        <item>Sort by Race</item>
+        <item>Sort by Gender</item>
+        <item>Sort by Affiliation</item>
+    </string-array>
+    <string name="character_image">Character Image</string>
 </resources>
