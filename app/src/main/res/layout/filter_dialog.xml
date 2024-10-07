@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Input fields for filters (Hidden) -->
+    <EditText
+        android:id="@+id/filterName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Name"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/filterRace"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Race"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/filterGender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Gender"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/filterAffiliation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Affiliation"
+        android:visibility="gone" />
+
+    <!-- RadioGroup for Sort Order Selection -->
+    <RadioGroup
+        android:id="@+id/sortOrderGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp">
+
+        <RadioButton
+            android:id="@+id/sortAscending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrar por Ki (ascendiente)" />
+
+        <RadioButton
+            android:id="@+id/sortDescending"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Filtrar por Ki (descendiente)" />
+    </RadioGroup>
+
+    <!-- Button to Apply Filters -->
+    <Button
+        android:id="@+id/applyFiltersButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Aplicar" />
+</LinearLayout>
